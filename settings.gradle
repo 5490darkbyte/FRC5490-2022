@@ -9,9 +9,9 @@ pluginManagement {
         if (OperatingSystem.current().isWindows()) {
             String publicFolder = System.getenv('PUBLIC')
             if (publicFolder == null) {
-                publicFolder = "C:\\Users\\Public"
+                publicFolder = "C:\\Users\\Public" qq   
             }
-            def homeRoot = new File(publicFolder, "wpilib")
+            def homeRoot = new File(publicFolder, "wpilib") 
             frcHome = new File(homeRoot, frcYear)
         } else {
             def userFolder = System.getProperty("user.home")

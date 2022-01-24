@@ -4,24 +4,53 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.MotorConfigs;
 import frc.robot.RobotMap;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class Drivetrain extends SubsystemBase {
 
   //https://www.vexrobotics.com/pro/falcon-500
 
-  TalonFX left1 = new TalonFX(RobotMap.backLeftDrive);
-  TalonFX left2 = new TalonFX(RobotMap.frontLeftDrive);
+  //TODO: check which left motor is left and which is right
+  WPI_TalonFX left1 = new WPI_TalonFX(RobotMap.backLeftDrive);
+  WPI_TalonFX left2 = new WPI_TalonFX(RobotMap.frontLeftDrive);
 
-  TalonFX right1 = new TalonFX(RobotMap.backRightDrive);
-  TalonFX right2 = new TalonFX(RobotMap.frontRightDrive);
+  MotorControllerGroup lefts = new MotorControllerGroup(left1,left2);
+  
+  WPI_TalonFX right1 = new WPI_TalonFX(RobotMap.backRightDrive);
+  WPI_TalonFX right2 = new WPI_TalonFX(RobotMap.frontRightDrive);
+  
+  MotorControllerGroup rights = new MotorControllerGroup(right1,right2);
+
+
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
+    //configure motor limits
+
+    TalonFXConfiguration config = new TalonFXConfiguration();
+    config.supplyCurrLimit.enable = true;
+    config.supplyCurrLimit.triggerThresholdCurrent = MotorConfigs.universalCurrentLimit; // the peak supply current, in amps
+    config.supplyCurrLimit.triggerThresholdTime = MotorConfigs.universalPeakDuration; // the time at the peak supply current before the limit triggers, in sec
+    config.supplyCurrLimit.currentLimit = 30; // the current to maintain if the peak supply limit is triggered
+    left1.configAllSettings(config);
+    left2.configAllSettings(config);
+    right1.configAllSettings(config);
+    right2.configAllSettings(config);
+
+  }
+
+  public void drive() {
+    lefts.set(0.3);
   }
 
   @Override
