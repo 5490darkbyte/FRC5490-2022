@@ -4,18 +4,25 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.subsystems.Drivetrain;
 
 public class ManualDrive extends CommandBase {
 
+  RobotContainer m_container;
   Drivetrain m_drivetrain;
 
   /** Creates a new ManualDrive. */
-  public ManualDrive(Drivetrain drivetrain) {
-    this.m_drivetrain = drivetrain;
+  public ManualDrive(RobotContainer container) {
+    this.m_drivetrain = container.m_drivetrain;
+    this.m_container = container;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(drivetrain);
+    addRequirements(container.m_drivetrain);
+    
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +32,10 @@ public class ManualDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_drivetrain.drive();
+    double x = m_container.joystick.getX();
+    double y = m_container.joystick.getY();
+    
+    m_drivetrain.drive(y * 0.1,x * 0.1);
   }
 
   // Called once the command ends or is interrupted.

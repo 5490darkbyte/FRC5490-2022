@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,18 +20,17 @@ public class Drivetrain extends SubsystemBase {
 
   //https://www.vexrobotics.com/pro/falcon-500
 
-  //TODO: check which left motor is left and which is right
   WPI_TalonFX left1 = new WPI_TalonFX(RobotMap.backLeftDrive);
   WPI_TalonFX left2 = new WPI_TalonFX(RobotMap.frontLeftDrive);
 
   MotorControllerGroup lefts = new MotorControllerGroup(left1,left2);
   
-  WPI_TalonFX right1 = new WPI_TalonFX(RobotMap.backRightDrive);
-  WPI_TalonFX right2 = new WPI_TalonFX(RobotMap.frontRightDrive);
+  // WPI_TalonFX right1 = new WPI_TalonFX(RobotMap.backRightDrive);
+  // WPI_TalonFX right2 = new WPI_TalonFX(RobotMap.frontRightDrive);
   
-  MotorControllerGroup rights = new MotorControllerGroup(right1,right2);
+  // MotorControllerGroup rights = new MotorControllerGroup(right1,right2);
 
-
+  // DifferentialDrive differentialDrive = new DifferentialDrive(lefts);
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -44,13 +44,16 @@ public class Drivetrain extends SubsystemBase {
     config.supplyCurrLimit.currentLimit = 30; // the current to maintain if the peak supply limit is triggered
     left1.configAllSettings(config);
     left2.configAllSettings(config);
-    right1.configAllSettings(config);
-    right2.configAllSettings(config);
+    //TODO: uncomment these
+    //right1.configAllSettings(config);
+    //right2.configAllSettings(config);
 
+    left1.setInverted(true);
   }
 
-  public void drive() {
-    lefts.set(0.3);
+  public void drive(double xSpeed, double zRot) {
+    // differentialDrive.arcadeDrive(xSpeed, zRot);
+    lefts.set(xSpeed);
   }
 
   @Override
