@@ -36,12 +36,12 @@ public class Drivetrain extends SubsystemBase {
 
   MotorControllerGroup lefts = new MotorControllerGroup(leftBack,leftFront);
   
-  WPI_TalonFX rightBack = new WPI_TalonFX(RobotMap.backRightDrive);
-  WPI_TalonFX rightFront = new WPI_TalonFX(RobotMap.frontRightDrive);
+  // WPI_TalonFX rightBack = new WPI_TalonFX(RobotMap.backRightDrive);
+  // WPI_TalonFX rightFront = new WPI_TalonFX(RobotMap.frontRightDrive);
   
-  MotorControllerGroup rights = new MotorControllerGroup(rightBack,rightFront);
+  // MotorControllerGroup rights = new MotorControllerGroup(rightBack,rightFront);
 
-  DifferentialDrive differentialDrive = new DifferentialDrive(lefts,rights);
+  // DifferentialDrive differentialDrive = new DifferentialDrive(lefts,rights);
 
   //#endregion
   
@@ -91,8 +91,8 @@ public class Drivetrain extends SubsystemBase {
     leftBack.setSelectedSensorPosition(0);
     leftFront.setSelectedSensorPosition(0);
 
-    rightBack.setSelectedSensorPosition(0);
-    rightFront.setSelectedSensorPosition(0);
+    // rightBack.setSelectedSensorPosition(0);
+    // rightFront.setSelectedSensorPosition(0);
   }
 
 
@@ -106,13 +106,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   //in motor rpm
-  public double averagedRightEncoderVelocity() {
-    double average = 
-    (rightBack.getSelectedSensorVelocity() +
-    rightFront.getSelectedSensorVelocity()) / 2;
+  // public double averagedRightEncoderVelocity() {
+  //   double average = 
+  //   (rightBack.getSelectedSensorVelocity() +
+  //   rightFront.getSelectedSensorVelocity()) / 2;
 
-    return measuredUnitsTorpm(average);
-  }
+  //   return measuredUnitsTorpm(average);
+  // }
 
   public double averagedLeftEncoderPos() {
     double average = 
@@ -123,13 +123,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   //in motor rpm
-  public double averagedRightEncoderPos() {
-    double average = 
-    (rightBack.getSelectedSensorPosition() +
-    rightFront.getSelectedSensorPosition()) / 2;
+  // public double averagedRightEncoderPos() {
+  //   double average = 
+  //   (rightBack.getSelectedSensorPosition() +
+  //   rightFront.getSelectedSensorPosition()) / 2;
 
-    return measuredUnitsTorpm(average);
-  }
+  //   return measuredUnitsTorpm(average);
+  // }
 
 
 
@@ -149,21 +149,21 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /// in m/s
-  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(
-      averagedLeftEncoderVelocity() * Constants.gearRatio * 2 * Math.PI * Constants.wheelRadius / 60,
-      averagedRightEncoderVelocity() * Constants.gearRatio * 2 * Math.PI * Constants.wheelRadius / 60
-      );
-  }
+  // public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+  //   return new DifferentialDriveWheelSpeeds(
+  //     averagedLeftEncoderVelocity() * Constants.gearRatio * 2 * Math.PI * Constants.wheelRadius / 60,
+  //     averagedRightEncoderVelocity() * Constants.gearRatio * 2 * Math.PI * Constants.wheelRadius / 60
+  //     );
+  // }
 
 
 
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    odometry.update(getHeading(), averagedLeftEncoderPos(), averagedRightEncoderPos());
-  }
+  // @Override
+  // public void periodic() {
+  //   // This method will be called once per scheduler run
+  //   odometry.update(getHeading(), averagedLeftEncoderPos(), averagedRightEncoderPos());
+  // }
 
 
 
@@ -173,7 +173,8 @@ public class Drivetrain extends SubsystemBase {
 
   public void drive(double xSpeed, double zRot) {
     // differentialDrive.arcadeDrive(xSpeed, zRot);
-    lefts.set(xSpeed);
+    //lefts.set(xSpeed);
+    lefts.set(0.3);
   }
 
   //Conversion Functions
