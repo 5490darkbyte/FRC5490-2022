@@ -35,8 +35,12 @@ public class ManualDrive extends CommandBase {
     double x = m_container.joystick.getX();
     double y = m_container.joystick.getY();
     
-    m_drivetrain.drive(y * 0.1,x * 0.1);
+    m_drivetrain.drive(y * 0.5,x * 0.4);
+
+    if (m_container.aButton.get())
+      m_drivetrain.resetEncoders();
   }
+
 
   // Called once the command ends or is interrupted.
   @Override
