@@ -16,12 +16,14 @@ import edu.wpi.first.math.util.Units;
  */
 public final class Constants {
 
+    //MARK: Drivetrain
+
     //TODO: fill out correct dimension
     public static double robotDriveWidthInches = 26.564;
 
     /// multiply motor speed by this to get wheel speed
-    //whels are spining 8 times slower than the motors
-    public static double gearRatio = 1/9;
+    //whels are spining 9 times slower than the motors
+    public static double gearRatio = 1.0/9.0;
     /// in meters
     public static double wheelRadius = Units.inchesToMeters(2);
 
@@ -32,7 +34,11 @@ public final class Constants {
     public static double ka = 0;
 
     public static double drivetrainPIDKp = 0;
+    
 
+    //MARK: Cargo Intake/Outake
+    public static double collectorArmGearRatio = 1.0 / 80.0;
 
+    public static double intakeOutakeGearRatio = 1.0 / 7.0;
 }
     

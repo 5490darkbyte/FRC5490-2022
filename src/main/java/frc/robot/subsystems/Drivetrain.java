@@ -115,21 +115,22 @@ public class Drivetrain extends SubsystemBase {
     return measuredUnitsTorpm(average);
   }
 
+  //in meters
   public double averagedLeftEncoderPos() {
     double average = 
     (leftBack.getSelectedSensorPosition()  +
     leftFront.getSelectedSensorPosition()) / 2;
 
-    return average;//measuredUnitsTorpm(average);
+    return measuredPosToMeters(average);//measuredUnitsTorpm(average);
   }
 
-  //in motor rpm
+  //in meters
   public double averagedRightEncoderPos() {
     double average = 
     (rightBack.getSelectedSensorPosition() +
     rightFront.getSelectedSensorPosition()) / 2;
 
-    return average;//measuredUnitsTorpm(average);
+    return measuredPosToMeters(average);//measuredUnitsTorpm(average);
   }
 
 
@@ -174,8 +175,6 @@ public class Drivetrain extends SubsystemBase {
 
   //MARK: Manual Driving
 
-
-
   public void drive(double xSpeed, double zRot) {
     differentialDrive.arcadeDrive(xSpeed, zRot);
     //lefts.set(xSpeed);
@@ -184,7 +183,11 @@ public class Drivetrain extends SubsystemBase {
 
   //Conversion Functions
 
-  //TODO: check both of these conversion functions
+  double measuredPosToMeters(double measured) {
+    return measured / 2048.0 * Constants.gearRatio * Constants.wheelRadius * Math.PI * 2;
+  }
+
+  //TODO: check both of these conversion functions might only be for last years shooter
   double measuredUnitsTorpm(double measured) {
     return (measured / 4096) * 600;
   }
