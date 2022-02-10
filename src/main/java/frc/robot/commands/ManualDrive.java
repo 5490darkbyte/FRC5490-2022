@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Robot;
@@ -34,7 +35,7 @@ public class ManualDrive extends CommandBase {
   public void execute() {
     double x = m_container.joystick.getX();
     double y = m_container.joystick.getY();
-    
+    SmartDashboard.putNumber("get x", y);
     m_drivetrain.drive(y * 0.5,x * 0.4);
 
     if (m_container.aButton.get())

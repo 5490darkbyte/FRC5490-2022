@@ -15,33 +15,33 @@ public class IntakeOuttake extends SubsystemBase {
   /** Creates a new IntakeOuttake. */
   public IntakeOuttake() {
 
-    motor.configContinuousCurrentLimit(MotorConfigs.redlineContinuousCurrentLimit, 0);
-		motor.configPeakCurrentLimit(MotorConfigs.redlinePeakCurrent, 0);
-		motor.configPeakCurrentDuration(MotorConfigs.redlinePeakDuration, 0);
-		motor.enableCurrentLimit(true);	
-    motor.configOpenloopRamp(0, 0);
-    motor.setInverted(true); // invert left shooter motor
+    // motor.configContinuousCurrentLimit(MotorConfigs.redlineContinuousCurrentLimit, 0);
+		// motor.configPeakCurrentLimit(MotorConfigs.redlinePeakCurrent, 0);
+		// motor.configPeakCurrentDuration(MotorConfigs.redlinePeakDuration, 0);
+		// motor.enableCurrentLimit(true);	
+    // motor.configOpenloopRamp(0, 0);
+    // motor.setInverted(true); // invert left shooter motor
 
-    //Motionmagic extra configurations
-    motor.configMotionCruiseVelocity(MotorConfigs.redlineLeftCruiseVelocity);
-    motor.configMotionAcceleration(MotorConfigs.redlineLeftAccel);
+    // //Motionmagic extra configurations
+    // motor.configMotionCruiseVelocity(MotorConfigs.redlineLeftCruiseVelocity);
+    // motor.configMotionAcceleration(MotorConfigs.redlineLeftAccel);
 
-    //pid values
-    motor.configSelectedFeedbackSensor(TalonSRXFeedbackD evice.QuadEncoder, 0, 150);
-    motor.selectProfileSlot(0, 0);
+    // //pid values
+    // motor.configSelectedFeedbackSensor(TalonSRXFeedbackDevice.QuadEncoder, 0, 150);
+    // motor.selectProfileSlot(0, 0);
 
-    //TODO: extract coeficients to constants
-    motor.config_kP(0, 0.015);
-    motor.config_kI(0, 0.00004);
-    motor.config_IntegralZone(0, 5000);
-    motor.config_kD(0, 0.3);
-    motor.config_kF(0,0);
+    // //TODO: extract coeficients to constants
+    // motor.config_kP(0, 0.015);
+    // motor.config_kI(0, 0.00004);
+    // motor.config_IntegralZone(0, 5000);
+    // motor.config_kD(0, 0.3);
+    // motor.config_kF(0,0);
 
 
   }
 
   //an srx controlled motor
-  public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.intakeOutake);
+  //public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.intakeOutake);
 
   public void dump() {
     // leftShooter.set(ControlMode.Velocity, rpmtoMeasuredUnits(MotorConfigs.shooterTargetVel));

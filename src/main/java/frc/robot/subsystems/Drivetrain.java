@@ -166,7 +166,7 @@ public class Drivetrain extends SubsystemBase {
     // This method will be called once per scheduler run
     Pose2d currentPos = odometry.update(getHeading(), averagedLeftEncoderPos(), averagedRightEncoderPos());
 
-    SmartDashboard.putNumber("pos_x", currentPos.getX());
+    SmartDashboard.putNumber("pos_x", getWheelSpeeds().leftMetersPerSecond);//currentPos.getX());
     SmartDashboard.putNumber("pos_y", currentPos.getY());
     SmartDashboard.putNumber("pos_zRot", currentPos.getRotation().getDegrees());
   }

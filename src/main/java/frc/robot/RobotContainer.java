@@ -103,6 +103,11 @@ public class RobotContainer {
 	 */
 	private void configureButtonBindings() {
 		// aButton.when
+
+		//for collector arm - xbox left stick will move set point
+
+		// for intakeOutake, one expox trigger will enable dumping when pressed and the associated bumper butotn wll toggle on and off holding/collecting mode
+
 	}
 
 	/**

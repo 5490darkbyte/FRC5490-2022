@@ -18,7 +18,7 @@ public class CollectorArm extends SubsystemBase {
   }
 
   //an srx controlled motor
-  public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.collectorArm);
+  // public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.collectorArm);
 
 
 
