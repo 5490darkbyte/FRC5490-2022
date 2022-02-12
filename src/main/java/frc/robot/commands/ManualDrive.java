@@ -35,8 +35,41 @@ public class ManualDrive extends CommandBase {
   public void execute() {
     double x = m_container.joystick.getX();
     double y = m_container.joystick.getY();
-    SmartDashboard.putNumber("get x", y);
-    m_drivetrain.drive(y * 0.5,x * 0.4);
+    
+    if (m_container.button3.get()) {
+      x = 0;
+    }
+    
+    double reduceMultiplier = 0.8;
+    if (m_container.button6.get()) {
+      x *= reduceMultiplier;
+    }
+
+
+
+    if (m_container.button5.get()) {
+      y *= reduceMultiplier;
+    }
+    
+    if (m_container.button4.get()) {
+      y = 0;
+    }
+    
+    double sensativity = -m_container.joystick.getThrottle();
+
+    //remap from [-1,1] to [0,1]
+    sensativity = (sensativity + 1.0) / 2.0;
+
+    double minSens = 0.5;
+    double maxSens = 1;
+
+    //remap from [0,1] to [minSens,maxSens]
+    sensativity = minSens + (sensativity - 0) * (maxSens - minSens) / (1 - 0);
+    
+    SmartDashboard.putNumber("sensativity", sensativity);
+
+
+    m_drivetrain.drive(y * 0.5 * sensativity,x * 0.5 * sensativity);
 
     if (m_container.aButton.get())
       m_drivetrain.resetEncoders();
