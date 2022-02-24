@@ -25,7 +25,8 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public final Drivetrain m_drivetrain = new Drivetrain();
 
-	private final ManualDrive m_tempAutoCommand = new ManualDrive(this);
+	private ManualDrive m_tempAutoCommand;
+	private ManualDrive m_manualCommand = new ManualDrive(this);
 
 	public Joystick joystick = new Joystick(0);
 	public Joystick xbox = new Joystick(1);
@@ -116,12 +117,18 @@ public class RobotContainer {
 	 * @return the command to run in autonomous
 	 */
 	public Command getAutonomousCommand() {
+
+
+		if (m_tempAutoCommand == null) {
+			m_tempAutoCommand = new ManualDrive(this);
+		}
+
 		// An ExampleCommand will run in autonomous
 		return m_tempAutoCommand;
 	}
 
 	public Command getTeleopCommand() {
 		// An ExampleCommand will run in autonomous
-		return m_tempAutoCommand;
+		return m_manualCommand;
 	}
 }
