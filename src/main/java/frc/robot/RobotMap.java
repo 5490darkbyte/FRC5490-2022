@@ -16,7 +16,7 @@ public class RobotMap {
 
 	//TODO: Enter can id
 	// this will be a __ motor
-	public static int collectorArm = -1;
+	public static int collectorArm = 15;
 	
 	//TODO: Enter can id
 	// this will be a redline motor

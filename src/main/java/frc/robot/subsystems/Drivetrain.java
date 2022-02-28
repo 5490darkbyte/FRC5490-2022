@@ -24,6 +24,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -43,6 +44,8 @@ public class Drivetrain extends SubsystemBase {
   MotorControllerGroup rights = new MotorControllerGroup(rightBack,rightFront);
 
   DifferentialDrive differentialDrive = new DifferentialDrive(lefts,rights);
+
+  WPI_Pigeon2 gyro = new WPI_Pigeon2(RobotMap.gyro);
 
   //#endregion
   
@@ -67,14 +70,14 @@ public class Drivetrain extends SubsystemBase {
     config.supplyCurrLimit.triggerThresholdTime = MotorConfigs.universalPeakDuration; // the time at the peak supply current before the limit triggers, in sec
     config.supplyCurrLimit.currentLimit = 30; // the current to maintain if the peak supply limit is triggered
     leftBack.configAllSettings(config);
-    leftFront.configAllSettings(config);
+    leftFront.configAllSettings(config);  
 
     rightBack.configAllSettings(config);
     rightFront.configAllSettings(config);
 
     //left1.sensor
 
-    lefts.setInverted(true);
+    rights.setInverted(true);
 
     //trajectory tracing
     resetEncoders();
@@ -175,8 +178,9 @@ public class Drivetrain extends SubsystemBase {
 
   //MARK: Manual Driving
 
+  //negative zRot id counter clockwise rotation
   public void drive(double xSpeed, double zRot) {
-    differentialDrive.arcadeDrive(xSpeed, zRot);
+    differentialDrive.arcadeDrive(xSpeed, -zRot);
     //lefts.set(xSpeed);
     //lefts.set(0.3);
   }
