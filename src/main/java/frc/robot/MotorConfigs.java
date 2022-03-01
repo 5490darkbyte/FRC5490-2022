@@ -27,5 +27,7 @@ public class MotorConfigs
 
     // 
 
+    //NEO Motor
+    public static final int neoCurrentLimit = universalCurrentLimit;
     
 }

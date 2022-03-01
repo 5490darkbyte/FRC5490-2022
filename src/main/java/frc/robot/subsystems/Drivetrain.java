@@ -69,6 +69,8 @@ public class Drivetrain extends SubsystemBase {
     config.supplyCurrLimit.triggerThresholdCurrent = MotorConfigs.universalCurrentLimit; // the peak supply current, in amps
     config.supplyCurrLimit.triggerThresholdTime = MotorConfigs.universalPeakDuration; // the time at the peak supply current before the limit triggers, in sec
     config.supplyCurrLimit.currentLimit = 30; // the current to maintain if the peak supply limit is triggered
+    
+    
     leftBack.configAllSettings(config);
     leftFront.configAllSettings(config);  
 

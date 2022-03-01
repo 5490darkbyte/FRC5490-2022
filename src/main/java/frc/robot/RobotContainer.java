@@ -4,12 +4,18 @@
 
 package frc.robot;
 
+import java.util.Collection;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ManualDrive;
+import frc.robot.commands.ManualMoveCollectorArm;
+import frc.robot.commands.auto.AutoLineDrive;
+import frc.robot.subsystems.CollectorArm;
 import frc.robot.subsystems.Drivetrain;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -24,9 +30,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public final Drivetrain m_drivetrain = new Drivetrain();
+	public final CollectorArm m_Collection = new CollectorArm();
 
-	private ManualDrive m_tempAutoCommand;
-	private ManualDrive m_manualCommand = new ManualDrive(this);
+	private AutoLineDrive m_tempAutoCommand;
+	private ParallelCommandGroup m_manualCommand = new ParallelCommandGroup(new ManualDrive(this), new ManualMoveCollectorArm(this));
 
 	public Joystick joystick = new Joystick(0);
 	public Joystick xbox = new Joystick(1);
@@ -120,7 +127,7 @@ public class RobotContainer {
 
 
 		if (m_tempAutoCommand == null) {
-			m_tempAutoCommand = new ManualDrive(this);
+			m_tempAutoCommand = new AutoLineDrive(this,-1);
 		}
 
 		// An ExampleCommand will run in autonomous

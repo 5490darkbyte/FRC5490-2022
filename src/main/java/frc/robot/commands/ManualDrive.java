@@ -60,7 +60,7 @@ public class ManualDrive extends CommandBase {
     //remap from [-1,1] to [0,1]
     sensativity = (sensativity + 1.0) / 2.0;
 
-    double minSens = 0.5;
+    double minSens = 0.4;
     double maxSens = 0.8;
 
     //remap from [0,1] to [minSens,maxSens]
@@ -69,7 +69,7 @@ public class ManualDrive extends CommandBase {
     SmartDashboard.putNumber("sensativity", sensativity);
 
 
-    m_drivetrain.drive(y * sensativity,x * 0.5 * sensativity);
+    m_drivetrain.drive(y * sensativity,x * sensativity);
 
     if (m_container.aButton.get())
       m_drivetrain.resetEncoders();
