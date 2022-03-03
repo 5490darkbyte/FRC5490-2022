@@ -54,8 +54,8 @@ public class Drivetrain extends SubsystemBase {
   DifferentialDriveOdometry odometry;
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ks, Constants.kv, Constants.ka);
 
-  PIDController leftPidController = new PIDController(Constants.drivetrainPIDKp, 0, 0);
-  PIDController rightPidController = new PIDController(Constants.drivetrainPIDKp, 0, 0);
+  PIDController leftPidController = new PIDController(Constants.drivetrainPIDKp, Constants.drivetrainPIDKi, Constants.drivetrainPIDKd);
+  PIDController rightPidController = new PIDController(Constants.drivetrainPIDKp, Constants.drivetrainPIDKi, Constants.drivetrainPIDKd);
 
 
   
@@ -196,11 +196,13 @@ public class Drivetrain extends SubsystemBase {
   public void pidDrive(double setPoint) {
     //just use left encoders to fake it
 
-    double prediciton = leftPidController.calculate(averagedLeftEncoderPos(), metersToMeasuredPos(setPoint));
+    double prediciton = leftPidController.calculate(averagedLeftEncoderPos(), setPoint);
+
+    SmartDashboard.putNumber("drivetrainEncoderVal", prediciton);
 
     //clmap to [-0.5,0.5]
-    prediciton = Math.min(prediciton,0.5);
-    prediciton = Math.max(prediciton,-0.5);
+    prediciton = Math.min(prediciton,0.4);
+    prediciton = Math.max(prediciton,-0.4);
 
     differentialDrive.arcadeDrive(prediciton, 0);
   }

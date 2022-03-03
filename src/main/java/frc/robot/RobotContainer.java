@@ -70,6 +70,9 @@ public class RobotContainer {
 	public JoystickButton button11;
 	public JoystickButton button12;
 
+	public int xboxLeftTrigger = 2;
+	public int xboxRightTrigger = 3;
+
 	/**
 	 * The container for the robot. Contains subsystems, OI devices, and commands.
 	 */
@@ -133,7 +136,7 @@ public class RobotContainer {
 
 
 		if (m_tempAutoCommand == null) {
-			m_tempAutoCommand = new AutoLineDrive(this,-1);
+			m_tempAutoCommand = new AutoLineDrive(this,-2);
 		}
 
 		// An ExampleCommand will run in autonomous

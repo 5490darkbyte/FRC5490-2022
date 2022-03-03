@@ -33,7 +33,9 @@ public final class Constants {
     public static double kv = 0;
     public static double ka = 0;
 
-    public static double drivetrainPIDKp = 0.1;
+    public static double drivetrainPIDKp = 10;
+    public static double drivetrainPIDKi = 10;
+    public static double drivetrainPIDKd = 0;
     
 
     //MARK: Cargo Intake/Outake
