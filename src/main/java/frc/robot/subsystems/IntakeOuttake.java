@@ -14,12 +14,14 @@ import frc.robot.RobotMap;
 public class IntakeOuttake extends SubsystemBase {
   /** Creates a new IntakeOuttake. */
   public IntakeOuttake() {
+    //775 pro motor
 
-    // motor.configContinuousCurrentLimit(MotorConfigs.redlineContinuousCurrentLimit, 0);
-		// motor.configPeakCurrentLimit(MotorConfigs.redlinePeakCurrent, 0);
-		// motor.configPeakCurrentDuration(MotorConfigs.redlinePeakDuration, 0);
-		// motor.enableCurrentLimit(true);	
-    // motor.configOpenloopRamp(0, 0);
+    motor.configContinuousCurrentLimit(MotorConfigs.vexContinuousCurrentLimit, 0);
+		motor.configPeakCurrentLimit(MotorConfigs.vexPeakCurrent, 0);
+		motor.configPeakCurrentDuration(MotorConfigs.vexPeakDuration, 0);
+		motor.enableCurrentLimit(true);	
+    motor.configOpenloopRamp(0, 0);
+    //psotive should be to shoot
     // motor.setInverted(true); // invert left shooter motor
 
     // //Motionmagic extra configurations
@@ -41,13 +43,19 @@ public class IntakeOuttake extends SubsystemBase {
   }
 
   //an srx controlled motor
-  //public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.intakeOutake);
+  public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.intakeOutake);
 
   public void dump() {
+    motor.set(0.4);
     // leftShooter.set(ControlMode.Velocity, rpmtoMeasuredUnits(MotorConfigs.shooterTargetVel));
   }
   public void collect() {
     // leftShooter.set(ControlMode.Velocity, rpmtoMeasuredUnits(MotorConfigs.shooterTargetVel));
+    motor.set(-0.6);
+  }
+
+  public void stop() {
+    motor.set(0);
   }
 
   @Override

@@ -20,6 +20,6 @@ public class RobotMap {
 	
 	//TODO: Enter can id
 	// this will be a redline motor
-	public static int intakeOutake = -1;
+	public static int intakeOutake = 18;
 
 }

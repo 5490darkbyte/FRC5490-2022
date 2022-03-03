@@ -9,11 +9,14 @@ import java.util.Collection;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.Dump;
+import frc.robot.commands.Intake;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualMoveCollectorArm;
 import frc.robot.commands.auto.AutoLineDrive;
 import frc.robot.subsystems.CollectorArm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.IntakeOuttake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -30,7 +33,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	public final Drivetrain m_drivetrain = new Drivetrain();
-	public final CollectorArm m_Collection = new CollectorArm();
+	public final CollectorArm m_Collection = new CollectorArm(this);
+	public final IntakeOuttake m_intakeOuttake = new IntakeOuttake();
 
 	private AutoLineDrive m_tempAutoCommand;
 	private ParallelCommandGroup m_manualCommand = new ParallelCommandGroup(new ManualDrive(this), new ManualMoveCollectorArm(this));
@@ -116,6 +120,8 @@ public class RobotContainer {
 
 		// for intakeOutake, one xbox trigger will enable dumping when pressed and the associated bumper butotn wll toggle on and off holding/collecting mode
 		
+		aButton.whenHeld(new Dump(this));
+		bButton.whenHeld(new Intake(this));
 	}
 
 	/**

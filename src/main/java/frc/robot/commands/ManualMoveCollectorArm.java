@@ -25,10 +25,10 @@ public class ManualMoveCollectorArm extends CommandBase {
   @Override
   public void execute() {
 
-    double speed = m_container.xbox.getY() * 0.1;
+    double speed = m_container.xbox.getY() * 0.8;
 
-    m_container.m_Collection.manualMove(speed);
-
+    // m_container.m_Collection.manualMove(speed);
+    m_container.m_Collection.
   }
 
   // Called once the command ends or is interrupted.

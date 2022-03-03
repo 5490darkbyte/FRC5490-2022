@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.MotorConfigs;
 import frc.robot.RobotMap;
+import pabeles.concurrency.IntOperatorTask.Min;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
@@ -99,6 +100,11 @@ public class Drivetrain extends SubsystemBase {
 
     rightBack.setSelectedSensorPosition(0);
     rightFront.setSelectedSensorPosition(0);
+  }
+
+  public void resetPID() {
+    leftPidController.reset();
+    rightPidController.reset();
   }
 
 
@@ -187,10 +193,30 @@ public class Drivetrain extends SubsystemBase {
     //lefts.set(0.3);
   }
 
+  public void pidDrive(double setPoint) {
+    //just use left encoders to fake it
+
+    double prediciton = leftPidController.calculate(averagedLeftEncoderPos(), metersToMeasuredPos(setPoint));
+
+    //clmap to [-0.5,0.5]
+    prediciton = Math.min(prediciton,0.5);
+    prediciton = Math.max(prediciton,-0.5);
+
+    differentialDrive.arcadeDrive(prediciton, 0);
+  }
+
+  public void stop() {
+    differentialDrive.arcadeDrive(0,0);
+  }
+
   //Conversion Functions
 
   double measuredPosToMeters(double measured) {
     return measured / 2048.0 * Constants.gearRatio * Constants.wheelRadius * Math.PI * 2;
+  }
+
+  double metersToMeasuredPos(double meters) {
+    return meters * 2048.0 / Constants.gearRatio / Constants.wheelRadius / Math.PI / 2;
   }
 
   //TODO: check both of these conversion functions might only be for last years shooter
