@@ -46,7 +46,7 @@ public class IntakeOuttake extends SubsystemBase {
   public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.intakeOutake);
 
   public void dump() {
-    motor.set(0.4);
+    motor.set(0.6);
     // leftShooter.set(ControlMode.Velocity, rpmtoMeasuredUnits(MotorConfigs.shooterTargetVel));
   }
   public void collect() {

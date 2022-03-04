@@ -24,10 +24,13 @@ public class CollectorArm extends SubsystemBase {
   RobotContainer container;
 
   //if set point lower than current amp up kD?
-  PIDController localPID = new PIDController(0.1, 0.01, 0.05);
+  PIDController localPID = new PIDController(0.1, 0.01, 0.01);
   double previusPrediction = 0;
 
-  double setPoint = 0;
+  double setPoint = 17;//15
+
+
+
 
   /** Creates a new CollectorArm. */
   public CollectorArm(RobotContainer container) {
@@ -60,7 +63,7 @@ public class CollectorArm extends SubsystemBase {
     // pid.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal);
     pid.setSmartMotionMaxAccel(1, 0);
 
-    motor.setOpenLoopRampRate(0.1);
+    motor.setOpenLoopRampRate(0);
     motor.setClosedLoopRampRate(0);
 
      // display PID coefficients on SmartDashboard
@@ -71,7 +74,7 @@ public class CollectorArm extends SubsystemBase {
      SmartDashboard.putNumber("Feed Forward", kFF);
      SmartDashboard.putNumber("Max Output", kMaxOutput);
      SmartDashboard.putNumber("Min Output", kMinOutput);
-     SmartDashboard.putNumber("Set Rotations", 15);
+     //SmartDashboard.putNumber("Set Rotations", 15);
   }
 
   //a spark max controlled motor
@@ -95,8 +98,8 @@ public class CollectorArm extends SubsystemBase {
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
 
-    
-    double rotations = SmartDashboard.getNumber("Set Rotations", 0);
+    double rotations = setPoint;
+    // double rotations = 15;//SmartDashboard.getNumber("Set Rotations", 0);
 
     //if PID coefficients on SmartDashboard have changed, write new values to controller
     if((p != kP)) { pid.setP(p); kP = p; }
@@ -128,12 +131,13 @@ public class CollectorArm extends SubsystemBase {
       
       
      //clmap to [-0.6,0.6]
-     predict = Math.min(predict,0.6);
-     predict = Math.max(predict,-0.6);
+     predict = Math.min(predict,0.5);
+     predict = Math.max(predict,-0.5);
 
-      double actualPredict = lerp(predict, previusPrediction,0.5);
+      double actualPredict = lerp(previusPrediction,predict,1);
       previusPrediction = actualPredict;
-      //motor.set(actualPredict);
+      SmartDashboard.putNumber("sendingLocalVal", actualPredict);
+      motor.set(actualPredict);
     }
 
 
@@ -157,7 +161,7 @@ public class CollectorArm extends SubsystemBase {
 
 
   public void manualMove(double val) {
-    motor.set(-val);
+    motor.set(-val * 0.6);
   }
 
   public double lerp(double a, double b, double t) {
