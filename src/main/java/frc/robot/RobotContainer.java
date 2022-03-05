@@ -13,6 +13,7 @@ import frc.robot.commands.Dump;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualMoveCollectorArm;
+import frc.robot.commands.TogglePIDSetPoint;
 import frc.robot.commands.auto.AutoLineDrive;
 import frc.robot.subsystems.CollectorArm;
 import frc.robot.subsystems.Drivetrain;
@@ -125,6 +126,8 @@ public class RobotContainer {
 		
 		aButton.whenHeld(new Dump(this));
 		bButton.whenHeld(new Intake(this));
+
+		xButton.whenReleased(new TogglePIDSetPoint(this));
 	}
 
 	/**

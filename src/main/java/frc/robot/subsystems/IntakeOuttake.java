@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.TalonSRXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.MotorConfigs;
 import frc.robot.RobotMap;
@@ -39,11 +41,24 @@ public class IntakeOuttake extends SubsystemBase {
     // motor.config_kD(0, 0.3);
     // motor.config_kF(0,0);
 
+    //|| motor.getSensorCollection().isRevLimitSwitchClosed()
+    // SmartDashboard.putBoolean("isClosed", motor.getSensorCollection().isRevLimitSwitchClosed());
 
   }
 
+
+  //angles of cllector - top - 27*, bottom - -4* , collecting - 30*
+
+ // - level - 59
+ // locked - 65 which is 5 over level - erorr rounding?
+
+ // at bottom - -3
+
+
   //an srx controlled motor
-  public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.intakeOutake);
+  public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.intakeOutake);  
+
+  // DigitalInput toplimitSwitch = new DigitalInput(18);
 
   public void dump() {
     motor.set(0.6);
