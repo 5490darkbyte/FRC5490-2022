@@ -15,6 +15,7 @@ public class ShootWithTimout extends CommandBase {
 
   Timer cutoffTimer = new Timer();
 
+  boolean started = false;
 
   /** Creates a new ShootWithTimout. */
   public ShootWithTimout(RobotContainer container, double timeout) {
@@ -26,13 +27,18 @@ public class ShootWithTimout extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    cutoffTimer.reset();
-    cutoffTimer.start();
+  
   }
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (!started) {
+      cutoffTimer.reset();
+      cutoffTimer.start();
+      started = true;
+     }
+
     m_Container.m_intakeOuttake.dump();
   }
 
@@ -40,6 +46,7 @@ public class ShootWithTimout extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     m_Container.m_intakeOuttake.stop();
+    started = false;
   }
 
   // Returns true when the command should end.

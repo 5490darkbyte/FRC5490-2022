@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -82,6 +83,7 @@ public class CollectorArm extends SubsystemBase {
     motor.setOpenLoopRampRate(0);
     motor.setClosedLoopRampRate(0);
 
+    
      // display PID coefficients on SmartDashboard
      SmartDashboard.putNumber("P Gain", kP);
      SmartDashboard.putNumber("I Gain", kI);
@@ -90,6 +92,9 @@ public class CollectorArm extends SubsystemBase {
      SmartDashboard.putNumber("Feed Forward", kFF);
      SmartDashboard.putNumber("Max Output", kMaxOutput);
      SmartDashboard.putNumber("Min Output", kMinOutput);
+
+      SmartDashboard.putNumber("in auto?", 10);
+
      //SmartDashboard.putNumber("Set Rotations", 15);
 
     //  startRotOffset = motor.getEncoder().getPosition();
@@ -146,7 +151,7 @@ public class CollectorArm extends SubsystemBase {
 
     SmartDashboard.putNumber("thruttle", container.xbox.getRawAxis(container.xboxRightTrigger));
     
-    if (container.xbox.getRawAxis(container.xboxRightTrigger) > 0.8) {
+    if (container.xbox.getRawAxis(container.xboxRightTrigger) < 0.8) {
       pid.setReference(rotations, CANSparkMax.ControlType.kPosition);
       
       double predict = localPID.calculate(motor.getEncoder().getPosition(), rotations);

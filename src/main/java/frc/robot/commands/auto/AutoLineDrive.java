@@ -55,8 +55,11 @@ public class AutoLineDrive extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putNumber("driveDistance", Math.abs(distance - m_drivetrain.pidDistance()));
-    //end here if below threshold
-    return false; //check if within range of distance -- in future ad buffer time
+    SmartDashboard.putNumber("driveDis1", distance);
+    SmartDashboard.putNumber("driveDis2", m_drivetrain.pidDistance());
+    SmartDashboard.putNumber("driveDistance", Math.abs(distance + m_drivetrain.pidDistance()));
+    SmartDashboard.putBoolean("driveDistance stooping", Math.abs(distance + m_drivetrain.pidDistance()) < 0.01);
+    //end here if below thresh0old
+    return Math.abs(distance + m_drivetrain.pidDistance()) < 0.01; //check if within range of distance -- in future ad buffer time
   }
 }

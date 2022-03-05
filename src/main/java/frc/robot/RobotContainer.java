@@ -15,6 +15,7 @@ import frc.robot.commands.ManualDrive;
 import frc.robot.commands.ManualMoveCollectorArm;
 import frc.robot.commands.TogglePIDSetPoint;
 import frc.robot.commands.auto.AutoLineDrive;
+import frc.robot.commands.auto.ShootWithTimout;
 import frc.robot.subsystems.CollectorArm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeOuttake;
@@ -129,6 +130,8 @@ public class RobotContainer {
 		bButton.whenHeld(new Intake(this));
 
 		xButton.whenReleased(new TogglePIDSetPoint(this));
+
+		yButton.whenReleased(new ShootWithTimout(this, 3));
 	}
 
 	/**
@@ -140,14 +143,16 @@ public class RobotContainer {
 
 
 		//KREMOVE test distances
-		if (m_tempAutoCommand == null) {
+
+		// if (m_tempAutoCommand == null) {
 			//m_tempAutoCommand = new AutoLineDrive(this,-2);
 			m_tempAutoCommand = new SequentialCommandGroup(
-				new AutoLineDrive(this, 0.5),
+				new AutoLineDrive(this, 1.3),
 				//dump commandfor about 3s
-				new AutoLineDrive(this, -1)
+				new ShootWithTimout(this, 2),
+				new AutoLineDrive(this, -2)
 			);
-		}
+		// }
 
 		// An ExampleCommand will run in autonomous
 		return m_tempAutoCommand;
