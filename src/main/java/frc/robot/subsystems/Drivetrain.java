@@ -207,6 +207,10 @@ public class Drivetrain extends SubsystemBase {
     differentialDrive.arcadeDrive(prediciton, 0);
   }
 
+  public double pidDistance() {
+    return averagedLeftEncoderPos();
+  }
+
   public void stop() {
     differentialDrive.arcadeDrive(0,0);
   }
@@ -214,11 +218,11 @@ public class Drivetrain extends SubsystemBase {
   //Conversion Functions
 
   double measuredPosToMeters(double measured) {
-    return measured / 2048.0 * Constants.gearRatio * Constants.wheelRadius * Math.PI * 2;
+    return measured / 4096.0 * Constants.gearRatio * Constants.wheelRadius * Math.PI * 2;
   }
 
   double metersToMeasuredPos(double meters) {
-    return meters * 2048.0 / Constants.gearRatio / Constants.wheelRadius / Math.PI / 2;
+    return meters * 4096.0 / Constants.gearRatio / Constants.wheelRadius / Math.PI / 2;
   }
 
   //TODO: check both of these conversion functions might only be for last years shooter

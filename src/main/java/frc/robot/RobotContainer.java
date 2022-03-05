@@ -20,6 +20,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.IntakeOuttake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
@@ -37,7 +38,7 @@ public class RobotContainer {
 	public final CollectorArm m_Collection = new CollectorArm(this);
 	public final IntakeOuttake m_intakeOuttake = new IntakeOuttake();
 
-	private AutoLineDrive m_tempAutoCommand;
+	private Command m_tempAutoCommand;
 	private ParallelCommandGroup m_manualCommand = new ParallelCommandGroup(new ManualDrive(this), new ManualMoveCollectorArm(this));
 
 	public Joystick joystick = new Joystick(0);
@@ -138,8 +139,14 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 
 
+		//KREMOVE test distances
 		if (m_tempAutoCommand == null) {
-			m_tempAutoCommand = new AutoLineDrive(this,-2);
+			//m_tempAutoCommand = new AutoLineDrive(this,-2);
+			m_tempAutoCommand = new SequentialCommandGroup(
+				new AutoLineDrive(this, 0.5),
+				//dump commandfor about 3s
+				new AutoLineDrive(this, -1)
+			);
 		}
 
 		// An ExampleCommand will run in autonomous
