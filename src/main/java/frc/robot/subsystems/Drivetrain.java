@@ -161,6 +161,10 @@ public class Drivetrain extends SubsystemBase {
     return Rotation2d.fromDegrees(0);
   }
 
+  // public double getIMUVelocity() {
+  //   return gyro.get
+  // }
+
   /// in m/s
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
@@ -201,8 +205,8 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("drivetrainEncoderVal", prediciton);
 
     //clmap to [-0.5,0.5]
-    prediciton = Math.min(prediciton,0.35);
-    prediciton = Math.max(prediciton,-0.35);
+    prediciton = Math.min(prediciton,0.45);
+    prediciton = Math.max(prediciton,-0.45);
 
     differentialDrive.arcadeDrive(prediciton, 0);
   }

@@ -60,6 +60,10 @@ public class AutoLineDrive extends CommandBase {
     SmartDashboard.putNumber("driveDistance", Math.abs(distance + m_drivetrain.pidDistance()));
     SmartDashboard.putBoolean("driveDistance stooping", Math.abs(distance + m_drivetrain.pidDistance()) < 0.01);
     //end here if below thresh0old
-    return Math.abs(distance + m_drivetrain.pidDistance()) < 0.01; //check if within range of distance -- in future ad buffer time
+
+    boolean atEnd =  Math.abs(distance + m_drivetrain.pidDistance()) < 0.01;
+    boolean speedZero = Math.abs(m_drivetrain.averagedLeftEncoderVelocity()) < 0.1 && (Math.abs(m_drivetrain.pidDistance()) > Math.abs(distance) / 2);
+
+    return atEnd || speedZero; //check if within range of distance -- in future ad buffer time
   }
 }

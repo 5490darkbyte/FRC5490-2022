@@ -142,19 +142,20 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 
 
-		//KREMOVE test distances
+		//KREMOVE test distancesdr
 
 		// if (m_tempAutoCommand == null) {
 			//m_tempAutoCommand = new AutoLineDrive(this,-2);
 			m_tempAutoCommand = new SequentialCommandGroup(
-				new AutoLineDrive(this, 1.3),
-				//dump commandfor about 3s
-				new ShootWithTimout(this, 2),
-				new AutoLineDrive(this, -2)
+				// new AutoLineDrive(this, 0.2),
+				// dump commandfor about 3s
+				// new ShootWithTimout(this, 2)
+				new AutoLineDrive(this, -1.0)
 			);
+			
 		// }
 
-		// An ExampleCommand will run in autonomous
+		// An nd will run in autonomous
 		return m_tempAutoCommand;
 	}
 

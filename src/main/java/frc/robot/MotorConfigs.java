@@ -13,7 +13,7 @@ public class MotorConfigs
     public static final int vexSmallContinuousCurrentLimit = 20;
     public static final int vexSmallPeakCurrent = 25;
     public static final int vexSmallPeakDuration = universalPeakDuration;
-
+ 
     // Andymark Redline Motors
     public static final int redlineContinuousCurrentLimit = universalCurrentLimit;
     public static final int redlinePeakCurrent = 55;

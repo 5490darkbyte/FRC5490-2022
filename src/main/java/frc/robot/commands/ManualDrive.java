@@ -69,7 +69,7 @@ public class ManualDrive extends CommandBase {
     SmartDashboard.putNumber("sensativity", sensativity);
 
 
-    m_drivetrain.drive(y * sensativity,x * sensativity);
+    m_drivetrain.drive(y * sensativity,x * sensativity * 0.9);
 
     if (m_container.aButton.get())
       m_drivetrain.resetEncoders();

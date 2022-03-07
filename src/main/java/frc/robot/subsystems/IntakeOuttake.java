@@ -61,7 +61,7 @@ public class IntakeOuttake extends SubsystemBase {
   // DigitalInput toplimitSwitch = new DigitalInput(18);
 
   public void dump() {
-    motor.set(0.8);
+    motor.set(0.9);
     // leftShooter.set(ControlMode.Velocity, rpmtoMeasuredUnits(MotorConfigs.shooterTargetVel));
   }
   public void collect() {

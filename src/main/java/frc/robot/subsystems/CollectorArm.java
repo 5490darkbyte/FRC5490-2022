@@ -22,7 +22,7 @@ import frc.robot.RobotMap;
 
 public class CollectorArm extends SubsystemBase {
   
-  double startRotOffset = degreeToNative(65+3+4+4);
+  double startRotOffset = degreeToNative(65+3+4);
 
   // - level - 59
   // locked - 65 which is 5 over level - erorr rounding?
@@ -32,14 +32,14 @@ public class CollectorArm extends SubsystemBase {
  //all units in absolute from bottom stop
 
  public final double topStop = degreeToNative(65 + 3 + 4) - startRotOffset;
- public final double shootingStop = degreeToNative(60 + 3 + 4) - startRotOffset;
+ public final double shootingStop = degreeToNative(60 + 3 - 3) - startRotOffset;
  public final double bottomStop = degreeToNative(0) - startRotOffset;
   
 
   RobotContainer container;
 
   //if set point lower than current amp up kD?
-  PIDController localPID = new PIDController(0.1, 0.01, 0.01);//0.01);
+  PIDController localPID = new PIDController(0.02, 0.001, 0.005);//0.01);
   double previusPrediction = 0;
 
   //in native units
@@ -52,10 +52,12 @@ public class CollectorArm extends SubsystemBase {
   /** Creates a new CollectorArm. */
   public CollectorArm(RobotContainer container) {
     this.container = container;
-    motor.setIdleMode(IdleMode.kBrake);
+
+    // motor.setIdleMode(IdleMode.kBrake);//remove when added to spark max
+    //call stop here 
+    //stop() - un comment wonce spark max changed
 
     motor.setSmartCurrentLimit(MotorConfigs.neoCurrentLimit);
-
 
     
 
@@ -100,8 +102,8 @@ public class CollectorArm extends SubsystemBase {
     //  startRotOffset = motor.getEncoder().getPosition();
 
     //asuming arm is at top
-    toggleSetPoint();
-    setPoint = shootingStop;
+    // toggleSetPoint();
+    // setPoint = shootingStop;
   }
 
   //a spark max controlled motor
@@ -152,16 +154,17 @@ public class CollectorArm extends SubsystemBase {
     SmartDashboard.putNumber("thruttle", container.xbox.getRawAxis(container.xboxRightTrigger));
     
     if (container.xbox.getRawAxis(container.xboxRightTrigger) < 0.8) {
-      pid.setReference(rotations, CANSparkMax.ControlType.kPosition);
+      //////why thisssssss
+      //pid.setReference(rotations, CANSparkMax.ControlType.kPosition);
       
       double predict = localPID.calculate(motor.getEncoder().getPosition(), rotations);
       
       
      //clmap to [-0.6,0.6]
-     predict = Math.min(predict,0.5);
-     predict = Math.max(predict,-0.5);
+     predict = Math.min(predict,0.6);
+     predict = Math.max(predict,-0.6);
 
-      double actualPredict = lerp(previusPrediction,predict,0.5);
+      double actualPredict = lerp(previusPrediction,predict,1);//0.5);
       previusPrediction = actualPredict;
       SmartDashboard.putNumber("sendingLocalVal", actualPredict);
       motor.set(actualPredict);
@@ -190,7 +193,18 @@ public class CollectorArm extends SubsystemBase {
 
 
   public void manualMove(double val) {
-    motor.set(-val * 0.6);
+
+    if (container.xbox.getRawAxis(container.xboxRightTrigger) > 0.8) {
+
+      double reduction = 0.9;
+
+      if (container.rightButton.get()) {
+        reduction = 1;
+      }
+
+      motor.set(-val * reduction);
+
+    }
   }
 
   public double lerp(double a, double b, double t) {
@@ -214,7 +228,7 @@ public class CollectorArm extends SubsystemBase {
       setDown = true;
     } else {
       setPoint = shootingStop;
-      localPID.setD(0.01);
+      localPID.setD(0.01);  
       localPID.setI(0.005);
       localPID.setP(0.08);
       setDown = false;
