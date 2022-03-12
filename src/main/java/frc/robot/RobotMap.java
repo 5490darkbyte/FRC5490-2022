@@ -2,6 +2,8 @@ package frc.robot;
 
 public class RobotMap {
     
+	//CAN
+
 	//MARK: Drivetrain [0,10)
 
     public static int backLeftDrive = 1;
@@ -14,12 +16,17 @@ public class RobotMap {
 
 	//MARK: Cargo Intake/Outake [10,20)
 
-	//TODO: Enter can id
+	
 	// this will be a __ motor
 	public static int collectorArm = 15;
 	
-	//TODO: Enter can id
+	
 	// this will be a redline motor
 	public static int intakeOutake = 18;
+
+
+	//DIO
+
+	public static int lowerLimitSWH = 9;//0;
 
 }

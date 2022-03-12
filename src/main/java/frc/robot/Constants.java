@@ -18,7 +18,6 @@ public final class Constants {
 
     //MARK: Drivetrain
 
-    //TODO: fill out correct dimension
     public static double robotDriveWidthInches = 26.564;
 
     /// multiply motor speed by this to get wheel speed
@@ -39,8 +38,8 @@ public final class Constants {
     
 
     //MARK: Cargo Intake/Outake
+    
     public static double collectorArmGearRatio = 1.0 / 80.0;
-
     public static double intakeOutakeGearRatio = 1.0 / 7.0;
 }
     

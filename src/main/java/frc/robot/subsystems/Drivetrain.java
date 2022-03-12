@@ -19,10 +19,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.MotorConfigs;
 import frc.robot.RobotMap;
-import pabeles.concurrency.IntOperatorTask.Min;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
@@ -33,7 +29,6 @@ public class Drivetrain extends SubsystemBase {
 
   //controller docs at: https://store.ctr-electronics.com/content/api/java/html/classcom_1_1ctre_1_1phoenix_1_1motorcontrol_1_1can_1_1_talon_f_x.html 
   // or https://store.ctr-electronics.com/falcon-500-powered-by-talon-fx/
-  //TODO: fix imidiatly lefts are actually right
   WPI_TalonFX leftBack = new WPI_TalonFX(RobotMap.backLeftDrive);
   WPI_TalonFX leftFront = new WPI_TalonFX(RobotMap.frontLeftDrive);
 
@@ -85,7 +80,6 @@ public class Drivetrain extends SubsystemBase {
     //trajectory tracing
     resetEncoders();
     odometry = new DifferentialDriveOdometry(getHeading(),initialPosiiton());
-
   }
 
 
@@ -143,8 +137,6 @@ public class Drivetrain extends SubsystemBase {
 
     return measuredPosToMeters(average);//measuredUnitsTorpm(average);
   }
-
-
 
 
   public Pose2d initialPosiiton() {
@@ -205,8 +197,8 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("drivetrainEncoderVal", prediciton);
 
     //clmap to [-0.5,0.5]
-    prediciton = Math.min(prediciton,0.45);
-    prediciton = Math.max(prediciton,-0.45);
+    prediciton = Math.min(prediciton,0.4);
+    prediciton = Math.max(prediciton,-0.4);
 
     differentialDrive.arcadeDrive(prediciton, 0);
   }

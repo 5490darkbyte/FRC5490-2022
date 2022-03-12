@@ -9,6 +9,8 @@ import java.util.Collection;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Dump;
 import frc.robot.commands.Intake;
 import frc.robot.commands.ManualDrive;
@@ -39,7 +41,10 @@ public class RobotContainer {
 	public final CollectorArm m_Collection = new CollectorArm(this);
 	public final IntakeOuttake m_intakeOuttake = new IntakeOuttake();
 
-	private Command m_tempAutoCommand;
+	//private Command m_tempAutoCommand;
+	// private SendableChooser<Command> autoChooser = new SendableChooser<>();
+
+
 	private ParallelCommandGroup m_manualCommand = new ParallelCommandGroup(new ManualDrive(this), new ManualMoveCollectorArm(this));
 
 	public Joystick joystick = new Joystick(0);
@@ -109,6 +114,11 @@ public class RobotContainer {
 
 		// Configure the button bindings
 		configureButtonBindings();
+		// configureAuto();
+
+
+		String[] choices = { "Shoot Move","Shoot", "Move out" };
+		SmartDashboard.putStringArray("Auto List", choices);
 	}
 
 	/**
@@ -131,7 +141,57 @@ public class RobotContainer {
 
 		xButton.whenReleased(new TogglePIDSetPoint(this));
 
-		yButton.whenReleased(new ShootWithTimout(this, 3));
+		yButton.whenReleased(new ShootWithTimout(this, 1));
+	}
+
+	private Command configureAuto() {
+
+
+		String autoName = SmartDashboard.getString("Auto Selector", "Shoot Move");
+		switch (autoName) {
+		case "Shoot Move":
+			return new SequentialCommandGroup(
+					// new AutoLineDrive(this, 0.2),
+					// dump commandfor about 3s
+					new ShootWithTimout(this, 1),
+					new AutoLineDrive(this, -2)//reset distance
+				);
+			// break;
+		case "Shoot":
+		return new SequentialCommandGroup(
+			// new AutoLineDrive(this, 0.2),
+			// dump commandfor about 3s
+			new ShootWithTimout(this, 1)
+			// new AutoLineDrive(this, -0.5)//reset distance
+		);
+		case "Move out":
+		return new SequentialCommandGroup(
+			// new AutoLineDrive(this, 0.2),
+			// dump commandfor about 3s
+			// new ShootWithTimout(this, 2),
+			new AutoLineDrive(this, -1)//reset distance
+		);
+		}
+		return new ShootWithTimout(this, 2);
+
+
+		// autoChooser.addOption("Move shoot move", new SequentialCommandGroup(
+		// 	new AutoLineDrive(this, 0.2),
+		// 	// dump commandfor about 3s
+		// 	new ShootWithTimout(this, 2),
+		// 	new AutoLineDrive(this, -1.0)
+		// ));
+
+		// autoChooser.setDefaultOption("Shoot", new SequentialCommandGroup(
+		// 	// new AutoLineDrive(this, 0.2),
+		// 	// dump commandfor about 3s
+		// 	new ShootWithTimout(this, 2)
+		// 	// new AutoLineDrive(this, -1.0)
+		// ));
+
+		
+
+		// SmartDashboard.putData(autoChooser);
 	}
 
 	/**
@@ -146,17 +206,17 @@ public class RobotContainer {
 
 		// if (m_tempAutoCommand == null) {
 			//m_tempAutoCommand = new AutoLineDrive(this,-2);
-			m_tempAutoCommand = new SequentialCommandGroup(
-				// new AutoLineDrive(this, 0.2),
-				// dump commandfor about 3s
-				// new ShootWithTimout(this, 2)
-				new AutoLineDrive(this, -1.0)
-			);
+			// m_tempAutoCommand = new SequentialCommandGroup(
+			// 	// new AutoLineDrive(this, 0.2),
+			// 	// dump commandfor about 3s
+			// 	new ShootWithTimout(this, 2)
+			// 	// new AutoLineDrive(this, -1.0)
+			// );
 			
 		// }
 
 		// An nd will run in autonomous
-		return m_tempAutoCommand;
+		return configureAuto();//autoChooser.getSelected();
 	}
 
 	public Command getTeleopCommand() {
