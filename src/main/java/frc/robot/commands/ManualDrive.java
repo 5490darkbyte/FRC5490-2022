@@ -62,7 +62,7 @@ public class ManualDrive extends CommandBase {
     sensativity = (sensativity + 1.0) / 2.0;
 
     double minSens = 0.4;
-    double maxSens = 0.95;
+    double maxSens = 1;
 
     //remap from [0,1] to [minSens,maxSens]
     sensativity = minSens + (sensativity - 0) * (maxSens - minSens) / (1 - 0);

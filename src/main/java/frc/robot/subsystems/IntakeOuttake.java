@@ -27,10 +27,10 @@ public class IntakeOuttake extends SubsystemBase {
   public WPI_TalonSRX motor = new WPI_TalonSRX(RobotMap.intakeOutake);  
 
   public void dump() {
-    motor.set(0.9);
+    motor.set(1);
   }
   public void collect() {
-    motor.set(-0.6);
+    motor.set(-0.75);
   }
 
   public void stop() {

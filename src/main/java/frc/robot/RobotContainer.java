@@ -117,7 +117,7 @@ public class RobotContainer {
 		// configureAuto();
 
 
-		String[] choices = { "Shoot Move","Shoot", "Move out" };
+		String[] choices = { "Shoot Move", "Shoot Move Lower","Shoot", "Move out" };
 		SmartDashboard.putStringArray("Auto List", choices);
 	}
 
@@ -142,21 +142,30 @@ public class RobotContainer {
 		xButton.whenReleased(new TogglePIDSetPoint(this));
 
 		yButton.whenReleased(new ShootWithTimout(this, 1));
-	}
+	} 
 
 	private Command configureAuto() {
 
 
-		String autoName = SmartDashboard.getString("Auto Selector", "Shoot Move");
+		String autoName = SmartDashboard.getString("Auto Selector", "Shoot Move Lower");
 		switch (autoName) {
 		case "Shoot Move":
 			return new SequentialCommandGroup(
 					// new AutoLineDrive(this, 0.2),
 					// dump commandfor about 3s
 					new ShootWithTimout(this, 1),
-					new AutoLineDrive(this, -2)//reset distance
+					//robot = 43 cm
+					new AutoLineDrive(this, -1.4)//reset distance
 				);
 			// break;
+		case "Shoot Move Lower":
+			return new SequentialCommandGroup(
+					// new AutoLineDrive(this, 0.2),
+					// dump commandfor about 3s
+					new ShootWithTimout(this, 1),
+					new AutoLineDrive(this, -1.4),//reset distance
+					new TogglePIDSetPoint(this)
+				);
 		case "Shoot":
 		return new SequentialCommandGroup(
 			// new AutoLineDrive(this, 0.2),

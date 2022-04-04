@@ -197,8 +197,8 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("drivetrainEncoderVal", prediciton);
 
     //clmap to [-0.5,0.5]
-    prediciton = Math.min(prediciton,0.4);
-    prediciton = Math.max(prediciton,-0.4);
+    prediciton = Math.min(prediciton,0.45);
+    prediciton = Math.max(prediciton,-0.45);
 
     differentialDrive.arcadeDrive(prediciton, 0);
   }

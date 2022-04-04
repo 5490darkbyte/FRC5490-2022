@@ -75,7 +75,8 @@ public final double minFFAngle = 10;
   double previusManual = 0;
 
   //in absolute native units
-  double setPoint = topStop;//topStop;//17;//15
+  //TODO: top set point shouold be shooting stop both here and in toggle fucntion but leave for now 
+  double setPoint = shootingStop;//topStop;//17;//15
 
   boolean setDown = false;
 
@@ -91,6 +92,11 @@ public final double minFFAngle = 10;
   double startRotOffset = topStop;// degreeToNative(65+3+4);
   
   public double safetyClampted(double speed,boolean manual) {
+
+    if (container.leftButton.get()) {
+      return speed;
+    }
+
     double outSpeed = speed;
     SmartDashboard.putNumber("current native absolute",getNativeAbsolutePosition());
     if (getNativeAbsolutePosition() > topDeadzoneStart) {
@@ -115,7 +121,7 @@ public final double minFFAngle = 10;
         outSpeed = 0;
       }
       //TODO: fix bottom stop because shouldnt it be absolute zero
-      if (setPoint <= bottomStop && !manual) {
+      if (setPoint == bottomStop && !manual) {
         outSpeed = 0;
       }
     }
@@ -182,18 +188,18 @@ public final double minFFAngle = 10;
     if (container.xbox.getRawAxis(container.xboxRightTrigger) < 0.8) {
 
       double predict = localPID.calculate(nativePosition(), rotations);
-      double feedBias = 0;
+      double feedBias = 1;
       if (setPoint == shootingStop) {
         feedBias *= 1.2;
       }else {
-        feedBias *= 0.9;
+        feedBias *= 0.2;
       }
       
         predict += feedForwardForAngle(getCurrentAbsoluteAngle(),feedBias);
       // }
 
       //clmap to [-0.6,0.6]
-      predict = Math.min(predict,0.37);
+      predict = Math.min(predict,0.5);//TODO: raise limit?
       predict = Math.max(predict,-0.32);
 
       predict = safetyClampted(predict,false);
@@ -233,15 +239,15 @@ public final double minFFAngle = 10;
 
       double reduction = 0.4;//0.9;
 
-      // if (container.rightButton.get()) {
-      //   reduction = 1;
-      // }
+      if (container.xbox.getRawAxis(container.xboxLeftTrigger) > 0.8) {
+        reduction = 0.9;
+      }
 
         double power = -val * reduction;
         
         // if (getCurrentAbsoluteAngle() > minFFAngle) {
           if (!container.leftButton.get()) {
-            power += feedForwardForAngle(getCurrentAbsoluteAngle(),0);
+            power += feedForwardForAngle(getCurrentAbsoluteAngle(),1);
           }
         // }
 
@@ -288,14 +294,14 @@ public final double minFFAngle = 10;
 
 
   public void toggleSetPoint() {
-    if (setPoint == topStop) {
+    if (setPoint != bottomStop) {
       setPoint = bottomStop;
       // localPID.setD(0.005);
       // localPID.setI(0.001);
       // localPID.setP(0.02);
       setDown = true;
     } else {
-      setPoint = topStop;
+      setPoint = shootingStop;
       // localPID.setD(0.01);  
       // localPID.setI(0.005);
       // localPID.setP(0.08);
