@@ -113,16 +113,19 @@ public final double minFFAngle = 10;
       //reset origin
     // TODO: rest pid to clear i term
       //startRotOffset is in absolute
-      startRotOffset = 0;
-      motor.getEncoder().setPosition(0);
-      // startRotOffset = degreeToNative(nativePosition()) + topStop;
-
-      if (outSpeed < 0) {
-        outSpeed = 0;
+      if (Math.abs(motor.getEncoder().getVelocity()) <= 100 && getCurrentAbsoluteAngle() <= 30) {
+        startRotOffset = 0;
+        motor.getEncoder().setPosition(0);
+        // startRotOffset = degreeToNative(nativePosition()) + topStop;
       }
-      //TODO: fix bottom stop because shouldnt it be absolute zero
-      if (setPoint == bottomStop && !manual) {
-        outSpeed = 0;
+      if (!container.leftButton.get()) {
+        if (outSpeed < 0) {
+          outSpeed = 0;
+        }
+        //TODO: fix bottom stop because shouldnt it be absolute zero
+        if (setPoint == bottomStop && !manual) {
+          outSpeed = 0;
+        }
       }
     }
 
@@ -173,6 +176,7 @@ public final double minFFAngle = 10;
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("nativeVelocity", motor.getEncoder().getVelocity());
     //in floated native coords
     double rotations = setPoint - startRotOffset;
     // double rotations = 10;
