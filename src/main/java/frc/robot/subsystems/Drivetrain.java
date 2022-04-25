@@ -23,6 +23,14 @@ import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.WPI_Pigeon2;
 
+
+/* Controls Drivetrain Motors
+Auto parts were not finished so pid drive is the only functional auto part.
+It is use by the line drive pid command to move foward or backwards in a line.
+Some members are not used as they were going to be used for the trajectory tracing auto functionality that was never implimented
+
+Units are labeled on sensor reading methods
+*/
 public class Drivetrain extends SubsystemBase {
 
   //#region Members  
@@ -43,23 +51,21 @@ public class Drivetrain extends SubsystemBase {
 
   WPI_Pigeon2 gyro = new WPI_Pigeon2(RobotMap.gyro);
 
-  //#endregion
   
   DifferentialDriveKinematics kinimatics = new DifferentialDriveKinematics(Units.inchesToMeters(Constants.robotDriveWidthInches));
   DifferentialDriveOdometry odometry;
   SimpleMotorFeedforward feedForward = new SimpleMotorFeedforward(Constants.ks, Constants.kv, Constants.ka);
-
+  
   PIDController leftPidController = new PIDController(Constants.drivetrainPIDKp, Constants.drivetrainPIDKi, Constants.drivetrainPIDKd);
   PIDController rightPidController = new PIDController(Constants.drivetrainPIDKp, Constants.drivetrainPIDKi, Constants.drivetrainPIDKd);
-
-
   
   
-  /** Creates a new Drivetrain. */
+  //#endregion
+
+
   public Drivetrain() {
-
+    
     //configure motor limits
-
     TalonFXConfiguration config = new TalonFXConfiguration();
     config.supplyCurrLimit.enable = true;
     config.supplyCurrLimit.triggerThresholdCurrent = MotorConfigs.universalCurrentLimit; // the peak supply current, in amps
@@ -82,6 +88,18 @@ public class Drivetrain extends SubsystemBase {
     odometry = new DifferentialDriveOdometry(getHeading(),initialPosiiton());
   }
 
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    Pose2d currentPos = odometry.update(getHeading(), averagedLeftEncoderPos(), averagedRightEncoderPos());
+    
+    SmartDashboard.putNumber("pos_x", getWheelSpeeds().leftMetersPerSecond);//currentPos.getX());
+    SmartDashboard.putNumber("pos_y", currentPos.getY());
+    SmartDashboard.putNumber("pos_zRot", currentPos.getRotation().getDegrees());
+  }
+
+
+  //#region Sensor Methods
 
   public void resetOdometry(Pose2d pos) {
     resetEncoders();
@@ -100,7 +118,6 @@ public class Drivetrain extends SubsystemBase {
     leftPidController.reset();
     rightPidController.reset();
   }
-
 
   //in motor rpm
   public double averagedLeftEncoderVelocity() {
@@ -138,65 +155,49 @@ public class Drivetrain extends SubsystemBase {
     return measuredPosToMeters(average);//measuredUnitsTorpm(average);
   }
 
-
-  public Pose2d initialPosiiton() {
-    return new Pose2d(0,0,initialRotation());
-  }
-
-  public Rotation2d initialRotation() {
-    return new Rotation2d(0);
-  }
-
-  ///ccw = positive
+  //ccw = positive
   public Rotation2d getHeading() {
     //TODO: fix
     return Rotation2d.fromDegrees(0);
   }
 
-  // public double getIMUVelocity() {
-  //   return gyro.get
-  // }
+  
+  
+  public Pose2d initialPosiiton() {
+    return new Pose2d(0,0,initialRotation());
+  }
+  
+  public Rotation2d initialRotation() {
+    return new Rotation2d(0);
+  }
 
-  /// in m/s
+    
+  // in m/s
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
     return new DifferentialDriveWheelSpeeds(
       averagedLeftEncoderVelocity() * Constants.gearRatio * 2 * Math.PI * Constants.wheelRadius / 60,
       averagedRightEncoderVelocity() * Constants.gearRatio * 2 * Math.PI * Constants.wheelRadius / 60
       );
-  }
+    }
+    
+  //#endregion
+      
 
-
-
-
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    Pose2d currentPos = odometry.update(getHeading(), averagedLeftEncoderPos(), averagedRightEncoderPos());
-
-    SmartDashboard.putNumber("pos_x", getWheelSpeeds().leftMetersPerSecond);//currentPos.getX());
-    SmartDashboard.putNumber("pos_y", currentPos.getY());
-    SmartDashboard.putNumber("pos_zRot", currentPos.getRotation().getDegrees());
-  }
-
-
-
-  //MARK: Manual Driving
-
+  //#region Public Control Methods
+      
   //negative zRot id counter clockwise rotation
   public void drive(double xSpeed, double zRot) {
     differentialDrive.arcadeDrive(xSpeed, -zRot);
-    //lefts.set(xSpeed);
-    //lefts.set(0.3);
   }
 
   public void pidDrive(double setPoint) {
-    //just use left encoders to fake it
+    //just uses left encoders to fake it
 
     double prediciton = leftPidController.calculate(averagedLeftEncoderPos(), setPoint);
 
     SmartDashboard.putNumber("drivetrainEncoderVal", prediciton);
 
-    //clmap to [-0.5,0.5]
+    //clmap to [-0.45,0.]
     prediciton = Math.min(prediciton,0.45);
     prediciton = Math.max(prediciton,-0.45);
 
@@ -211,7 +212,9 @@ public class Drivetrain extends SubsystemBase {
     differentialDrive.arcadeDrive(0,0);
   }
 
-  //Conversion Functions
+  //#endregion
+
+  //#region Conversion Functions
 
   double measuredPosToMeters(double measured) {
     return measured / 4096.0 * Constants.gearRatio * Constants.wheelRadius * Math.PI * 2;
@@ -231,6 +234,6 @@ public class Drivetrain extends SubsystemBase {
     return (rpm / 600) * 4096;
   } 
 
-  // double RotationsPosTo
+  //#endregion
 
 }

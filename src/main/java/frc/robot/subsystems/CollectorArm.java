@@ -24,6 +24,15 @@ Units:
   Coordinate Systems:
   absolute - origin = arm lowered position
   floated - exact orign moves but zero in floated is zero from encoder.getPosition()
+
+Notes:
+  this file has not been cleaned up to prevent the chance of making breaking changes.
+  A fair warning that this system is the most complex on the robot and hence should be modified with care.
+  Basically the arm uses a p controller with custom smothing and a custom feed forward function that are applied. The Feed foward funciton is also used for manual control.
+  The Feed Forward function is modified to provide slightly more or less power during auto up or down movmenets to "push" the arm in the desired direction.
+  The arm uses a floating orign so that estimates of it's positon can be updated.
+  The arm code is tuned to raise and lower the arm minimising time and jerk.
+  For any further questions ask Michael Baron.
 */
 public class CollectorArm extends SubsystemBase {
   
